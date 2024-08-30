@@ -1,0 +1,9 @@
+.container {
+  visibility: hidden;
+  opacity: 0;
+}
+
+.isOpened {
+  visibility: visible;
+  opacity: 1;
+}
