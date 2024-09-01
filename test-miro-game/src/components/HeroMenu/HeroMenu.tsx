@@ -1,24 +1,35 @@
-import classNames from "classnames"
-import { OptionType } from "../../constants/SpellColours"
-import { Option } from "../Option/Option"
+import { useState } from "react";
+import { DefaultSpellState, OptionType, SpellColours } from "../../constants/SpellColours";
+import { Select } from "../Select/Select";
 
 import styles from './HeroMenu.module.css'
 
-type THeroMenu = {
+export interface IHeroMenu {
   isOpen: boolean
-  options: OptionType[]
-  isSelected: OptionType
+  onChange: (selectedColorValue: string) => void;
 }
 
-export const HeroMenu = (props:THeroMenu) => {
-  const {isOpen, options} = props
+export const HeroMenu = ({ isOpen, onChange }: IHeroMenu) => {
+  const [selected, setSelected] = useState<OptionType | undefined>(
+    DefaultSpellState.spellColour
+  );
+
+  const handleSubmit = (evt: React.FormEvent) => {
+    evt.preventDefault();
+    if (selected) onChange(selected.value);
+    console.log(selected);
+  };
+
+  const handleChange = (selectedColor: OptionType) => {
+    setSelected(selectedColor);
+  };
+
   return (
-    <div className={isOpen ? styles.isOpen : styles.container}>
-      <select>
-        {options.map(option => {
-          return <Option title={option.title} value={option.value}/>
-        })}
-      </select>
-    </div>
-  )
-}
+    <>
+      <form onSubmit={handleSubmit} className={isOpen ? styles.isOpen : styles.container}>
+        <Select onChange={handleChange} options={SpellColours} />
+        <button type="submit">Выбрать цвет</button>
+      </form>
+    </>
+  );
+};

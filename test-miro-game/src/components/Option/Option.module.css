@@ -1,0 +1,10 @@
+.item {
+  list-style: none;
+  cursor: pointer;
+  text-align: center;
+  margin: 5px 0;
+}
+
+.item:hover {
+  background-color: rgba(128, 128, 128, 0.199);
+}

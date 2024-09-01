@@ -1,13 +1,21 @@
-import { OptionType } from "../../constants/SpellColours"
+import { OptionType } from "../../constants/SpellColours";
+import styles from "./Option.module.css";
 
 type TOption = {
-  title: string
-  value: string
-}
+  title: string;
+  value: string;
+  onChange: ({ title, value }: OptionType) => void;
+};
 
 export const Option = (props: TOption) => {
-  const {title, value} = props
+  const { value, title, onChange } = props;
+
+  const handleClick = () => {
+    onChange({ title, value });
+  };
   return (
-    <option value={value}>{title}</option>
-  )
-}
+    <li onClick={handleClick} className={styles.item} data-value={value}>
+      {title}
+    </li>
+  );
+};

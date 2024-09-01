@@ -1,28 +1,30 @@
 import { IPlayer, Player, createPlayer } from '../Player/Player'
 import { useCanvas } from '../../hooks/useCanvas'
 import { ISpell, Spell, createSpell } from '../Spell/Spell'
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 interface ICanvas {
   style: Record<string, string>
   openMenu: () => void
-  spellColour: string
+  spellColour1: string
+  spellColour2: string
+  spellSpeed1: number
+  spellSpeed2: number
+  playerSpeed1: number
+  playerSpeed2: number
+
 }
 
 export const Canvas = (props: ICanvas) => {
-  const { openMenu, spellColour, ...rest } = props
+  const { openMenu, spellColour1, spellColour2, spellSpeed1, spellSpeed2, playerSpeed1, playerSpeed2, ...rest } = props
 
   const [score1, setScore1] = useState(0)
   const [score2, setScore2] = useState(0)
 
-
-
-
-
-  const player1 = useRef(createPlayer(100, 200, 1, 'red')).current
-  const player2 = useRef(createPlayer(window.innerWidth - 100, 200, -1, 'blue')).current
-  const spell1 = useRef(createSpell(player1.x + player1.radius, player1.y + player1.radius, 10, 10, spellColour)).current
-  const spell2 = useRef(createSpell(player2.x - player2.radius, player2.y - player2.radius, -10, -10, spellColour)).current
+  const player1 = useRef(createPlayer(100, 200, playerSpeed1, 'red')).current
+  const player2 = useRef(createPlayer(window.innerWidth - 100, 200, -playerSpeed2, 'blue')).current
+  const spell1 = useRef(createSpell(player1.x + player1.radius, player1.y + player1.radius, spellSpeed1, 10, spellColour1)).current
+  const spell2 = useRef(createSpell(player2.x - player2.radius, player2.y - player2.radius, -spellSpeed2, -10, spellColour2)).current
 
 
   const resetPositionSpell1 = () => {
@@ -35,18 +37,21 @@ export const Canvas = (props: ICanvas) => {
     spell2.y = player2.y
   }
 
-  const checkCollision = (spell: ISpell, player: IPlayer) => {
-    const dx = spell.x - player.x
-    const dy = spell.y - player.y
+  const checkDistance = (obj1X: number, obj2X: number, obj1Y: number, obj2Y: number) => {
+    const dx = obj1X - obj2X
+    const dy = obj1Y - obj2Y
     const distance = Math.sqrt(dx * dx + dy * dy)
+    return distance
+  }
+
+  const checkCollision = (spell: ISpell, player: IPlayer) => {
+    const distance = checkDistance(spell.x, player.x, spell.y, player.y)
     return distance < spell.radius + player.radius
   }
 
   const checkMouseOver = (evt: React.MouseEvent, player: IPlayer) => {
-    const dx = evt.clientX - player.x
-    const dy = evt.clientY - player.y
-    const distance = Math.sqrt(dx * dx + dy * dy)
-    return distance < player.radius
+    const distance = checkDistance(evt.clientX, player.x, evt.clientY, player.y)
+    return Math.abs(distance - player.radius) < 1
   }
 
   const handleMouseOver = (evt: React.MouseEvent) => {
@@ -54,10 +59,25 @@ export const Canvas = (props: ICanvas) => {
     if (checkMouseOver(evt, player2)) player2.speedY *= -1
   }
 
-  const handleClick = (evt: React.MouseEvent) => {
-    if (checkMouseOver(evt, player1)) openMenu()
-    if (checkMouseOver(evt, player2)) openMenu()
+  const checkMouseClick = (evt: React.MouseEvent, player: IPlayer) => {
+    const distance = checkDistance(evt.clientX, player.x, evt.clientY, player.y)
+    return distance < player.radius
   }
+
+  const handleClick = (evt: React.MouseEvent) => {
+    if (checkMouseClick(evt, player1)) openMenu()
+    if (checkMouseClick(evt, player2)) openMenu()
+  }
+
+  useEffect(() => {
+    spell1.color = spellColour1
+    spell2.color = spellColour2
+    spell1.speedX = spellSpeed1
+    spell2.speedX = -spellSpeed2
+    player1.speedY = playerSpeed1
+    player2.speedY = -playerSpeed2
+
+  }, [spellColour1, spellColour2, spellSpeed1, spellSpeed2, playerSpeed1, playerSpeed2])
 
   const canvasRef = useCanvas((context: CanvasRenderingContext2D, ratio: number) => {
     context.clearRect(0, 0, context.canvas.width, context.canvas.height)
