@@ -11,11 +11,9 @@ export const useCanvas = (
     const baseHeight = 720;
     let animationId: number;
     if (canvas) {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
       const ratio = canvas.height / baseHeight;
-      // console.log(canvas.width)
-      // console.log(ratio)
+      canvas.width = window.innerWidth - 10 * ratio;
+      canvas.height = window.innerHeight - 200 * ratio;
       const context = canvas.getContext("2d");
       if (context) {
         const render = () => {

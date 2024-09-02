@@ -47,6 +47,9 @@ export const Spell = (
     context.beginPath();
     context.arc(spellState.x, spellState.y, spellState.radius * ratio, 0, 2 * Math.PI);
     context.fillStyle = spellState.color;
+    context.strokeStyle = '#000'
+    context.lineWidth = 3
+    context.stroke()
     context.fill();
     context.closePath();
   };

@@ -3,13 +3,15 @@ import { DefaultSpellState, OptionType, SpellColours } from "../../constants/Spe
 import { Select } from "../Select/Select";
 
 import styles from './HeroMenu.module.css'
+import classNames from "classnames";
 
 export interface IHeroMenu {
-  isOpen: boolean
   onChange: (selectedColorValue: string) => void;
+  top: string 
+  left: string 
 }
 
-export const HeroMenu = ({ isOpen, onChange }: IHeroMenu) => {
+export const HeroMenu = ({ onChange, top, left }: IHeroMenu) => {
   const [selected, setSelected] = useState<OptionType | undefined>(
     DefaultSpellState.spellColour
   );
@@ -17,7 +19,6 @@ export const HeroMenu = ({ isOpen, onChange }: IHeroMenu) => {
   const handleSubmit = (evt: React.FormEvent) => {
     evt.preventDefault();
     if (selected) onChange(selected.value);
-    console.log(selected);
   };
 
   const handleChange = (selectedColor: OptionType) => {
@@ -26,9 +27,9 @@ export const HeroMenu = ({ isOpen, onChange }: IHeroMenu) => {
 
   return (
     <>
-      <form onSubmit={handleSubmit} className={isOpen ? styles.isOpen : styles.container}>
+      <form style={{top: top, left: left}} className={styles.form} onSubmit={handleSubmit} >
         <Select onChange={handleChange} options={SpellColours} />
-        <button type="submit">Выбрать цвет</button>
+        <button className={styles.button} type="submit">Выбрать цвет</button>
       </form>
     </>
   );

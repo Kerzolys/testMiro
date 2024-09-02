@@ -47,6 +47,9 @@ export const Player = (
       2 * Math.PI
     );
     context.fillStyle = playerState.color
+    context.strokeStyle = '#000'
+    context.lineWidth = 3
+    context.stroke()
     context.fill();
     context.closePath();
   };

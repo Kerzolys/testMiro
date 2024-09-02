@@ -1,9 +1,24 @@
-.container {
-  visibility: hidden;
-  opacity: 0;
+.form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: stretch;
+  position: absolute;
 }
 
-.isOpened {
-  visibility: visible;
+.button {
+  padding: 10px 15px;
+  border-radius: 10px;
+  border: 1px solid #000;
+  background-color: transparent;
+  text-transform: uppercase;
+  transition: opacity .3s ease-in-out, transform .3s ease-in-out;
+  opacity: .7;
+  cursor: pointer;
+  text-shadow: 1px 1px rgba(230, 230, 230, 0.74);
+}
+
+.button:hover {
   opacity: 1;
+  transform: scale(1.2);
 }

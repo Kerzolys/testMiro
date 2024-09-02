@@ -24,7 +24,7 @@ export const Select = (props: ISelect) => {
 
   return (
     <>
-      <span onClick={handleClick}>{selected.title}</span>
+      <span className={styles.span} onClick={handleClick}>{selected.title}</span>
       <ul className={isOpen ? styles.isOpen : styles.list}>
         {isOpen &&
           options.map((option) => {

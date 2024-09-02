@@ -1,0 +1,33 @@
+.container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+.range {
+  cursor: pointer;
+}
+
+input[type='range'] {
+  -webkit-appearance: none;
+  background: #d5d58f;
+  border-radius: 50px;
+  block-size: 7px;
+  opacity: .7;
+  transition: .3s opacity ease-in-out;
+}
+
+input[type='range']:hover {
+  opacity: 1;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  inline-size: 15px;
+  aspect-ratio: 1 / 1;
+  background-color: #47484f;
+  border-radius: 50%;
+  border: 1px solid #000;
+}
