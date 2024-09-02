@@ -29,18 +29,78 @@ Your app is ready to be deployed!
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `npm run eject`
+## Тестовое задание для Microboard
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+## Описание игры Дуэль
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### Основная концепция:
+- есть два игрока-героя, которые перемещаются по оси Y и стреляют в противника заклинаниями
+- у пользователя есть возможность менять цвет заклинаний, кликнув на героя, менять направление движения героя с помощью мыши, а так же изменять скорость движения как самого героя, так и его заклинания
+- при каждом попадании заклинания в противника герою, выпустившему заклинание начисляется одно очко. 
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+### Стек
+- React
+- CRA
+- Typescript 
+- Canvas
+- CSS
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+#### App
 
-## Learn More
+За приложение отвечает компонент App, который рендерит сам Canvas, а так же вспомогательную информацию: ползунки для изменения скорости героев и заклинаний, модальные окна меню героев и очков героев. Так же в App происходит следуюшая логика:
+- отслеживание, установка и передача состояний цвета и скорости заклинаний
+- скорости героев
+- открытие\закрытие модальных окон
+- передача координат для правильного расположения в браузерном окне для содержимого модальных окон (в данном случае - меню выбора цвета заклинаний)
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+#### Canvas
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+В компоненте происходит отрисовка героев и заклинаний, а так же выстроена логика самой игры:
+- создаются герои - задаются размеры, положение на холсте, скорость, цвет
+- создаются заклинания - задаются размеры, положение на холсте, скорость, цвет
+- реализуется логика столкновения заклинания с героем
+- реализуется логика счета
+- реализуется логика взаимодействия пользователя с героем
+- с помощью хука useCanvas происходит отрисовка всей игры
+
+#### Player
+
+В компоненте устанавливаются значения для отрисовки героев, а так же сами действия для отрисовки
+
+
+#### Spell
+
+В компоненте устанавливаются значения для отрисовки заклинаний, а так же сами действия для отрисовки
+
+#### Modal
+
+Это модальное окно, созданное с помощью ReactDOM.CreatePortal.\
+В компоненте задаются условия для закрытия модального окна - клика по оверлею, а так же устанавливаются children
+
+#### HeroMenu
+
+Компонент предназначен для отрисовки формы выбора цвета заклинания.\
+В компоненте реализована логика установки нового значения для цвета заклинания и сабмита формы
+
+#### Select
+
+ Это компонент - кастомная реализация input[type="select"].\
+ В компоненте реализуется логика открытия\закрытия списка опций-цветов, устанавливается значение выбранного цвета и передается в родительский компонент формы
+
+ #### Option
+
+ Это компонент одного айтема спикска цветов.\
+ В нем реализована логика передачи значений цвета родительскому компоненту Select
+
+ #### SpeedRange
+
+ Это универсальный компонент input[type="range"].\
+ Он рендерит сам ползунок и текстовый спан.
+
+ #### hook useCanvas
+
+ Этот хук реализует сам Canvas. В нем создается контекст, задаются базовая высота, высчитывается соотношение размеров экрана к базовой высоте, реализуется анимация.
+
+ #### SpellColors
+
+ Это база данных возможных цветов заклинаний. Здесь же задается дефолтный цвет заклинаний

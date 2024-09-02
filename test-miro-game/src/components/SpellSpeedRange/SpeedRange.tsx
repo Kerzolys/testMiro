@@ -5,11 +5,11 @@ type TSpeedRange = {
   max: number
   value: number
   title: string
-  onChange: (newValue: number) => void  
+  onChange: (newValue: number) => void
 }
 
 export const SpeedRange = (props: TSpeedRange) => {
-  const { min, max, value = 1,title, onChange } = props
+  const { min, max, value = 1, title, onChange } = props
 
   const handleChange = (evt: React.ChangeEvent) => {
     const target = evt.target as HTMLInputElement

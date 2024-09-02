@@ -3,7 +3,6 @@ import { DefaultSpellState, OptionType, SpellColours } from "../../constants/Spe
 import { Select } from "../Select/Select";
 
 import styles from './HeroMenu.module.css'
-import classNames from "classnames";
 
 export interface IHeroMenu {
   onChange: (selectedColorValue: string) => void;

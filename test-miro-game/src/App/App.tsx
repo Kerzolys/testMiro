@@ -17,6 +17,8 @@ function App() {
   const [playerSpeed2, setPlayerSpeed2] = useState(1)
   const [playerMenu1, setPlayerMenu1] = useState<Record<string, string>>({ top: '0', left: '0' })
   const [playerMenu2, setPlayerMenu2] = useState<Record<string, string>>({ top: '0', left: '0' })
+  const [score1, setScore1] = useState(0)
+  const [score2, setScore2] = useState(0)
   const [isModalOpen, setIsModalOpen] = useState(false)
 
   const handleMenu = (top: string, left: string, player: number) => {
@@ -41,6 +43,10 @@ function App() {
     else setPlayerSpeed2(newSpeed);
   }
 
+  const increaseScore1 = () => setScore1(prev => prev + 1)
+  const increaseScore2 = () => setScore2(prev => prev + 1)
+
+
   const closeModal = () => {
     setIsModalOpen(false)
   }
@@ -60,7 +66,6 @@ function App() {
   return (
     <div className={styles.App}>
       <Canvas
-        openMenu={(top, left, player) => handleMenu(top, left, player)}
         style={{ border: '1px solid #000', borderRadius: '10px', backgroundColor: '#CAE5B3' }}
         spellColor1={color1}
         spellColor2={color2}
@@ -68,9 +73,14 @@ function App() {
         spellSpeed2={spellSpeed2}
         playerSpeed1={playerSpeed1}
         playerSpeed2={playerSpeed2}
+        openMenu={(top, left, player) => handleMenu(top, left, player)}
+        onChangeScore1={increaseScore1}
+        onChangeScore2={increaseScore2}
+
       />
       <div className={styles.oprtionsBlock}>
         <div className={styles.heroBlock}>
+          <h2>Player 1: {score1}</h2>
           <SpeedRange min={1} max={20} value={spellSpeed1} title='Скорость заклинания: ' onChange={(newSpeed) => handleChangeSpellSpeed(newSpeed, 1)} />
           <SpeedRange min={1} max={10} value={playerSpeed1} title='Скорость героя: ' onChange={(newSpeed) => handleChangePlayerSpeed(newSpeed, 1)} />
         </div>
@@ -79,6 +89,7 @@ function App() {
           {activePlayer === 2 && <HeroMenu top={playerMenu2.top} left={playerMenu2.left} onChange={(newColor) => handleChangeSpellColor(newColor, 2)} />}
         </Modal>
         <div className={styles.heroBlock}>
+          <h2>Player 2: {score2}</h2>
           <SpeedRange min={1} max={20} value={spellSpeed2} title='Скорость заклинания: ' onChange={(newSpeed) => handleChangeSpellSpeed(newSpeed, 2)} />
           <SpeedRange min={1} max={10} value={playerSpeed2} title='Скорость героя: ' onChange={(newSpeed) => handleChangePlayerSpeed(newSpeed, 2)} />
         </div>

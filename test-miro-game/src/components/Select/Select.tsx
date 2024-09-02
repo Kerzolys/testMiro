@@ -1,4 +1,4 @@
-import { SyntheticEvent, useState } from "react";
+import { useState } from "react";
 import { DefaultSpellState, OptionType } from "../../constants/SpellColours";
 import { Option } from "../Option/Option";
 import styles from "./Select.module.css";
@@ -10,6 +10,7 @@ interface ISelect {
 
 export const Select = (props: ISelect) => {
   const { options, onChange } = props;
+  
   const [isOpen, setIsOpen] = useState(false);
   const [selected, setSelected] = useState(DefaultSpellState.spellColour);
   const handleClick = () => {

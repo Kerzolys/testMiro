@@ -1,31 +1,24 @@
 import { IPlayer, Player, createPlayer } from '../Player/Player'
 import { useCanvas } from '../../hooks/useCanvas'
 import { ISpell, Spell, createSpell } from '../Spell/Spell'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef } from 'react'
 
-import styles from './Canvas.module.css'
 
 interface ICanvas {
   style: Record<string, string>
-  openMenu: (top: string, left: string, player: number) => void
   spellColor1: string
   spellColor2: string
   spellSpeed1: number
   spellSpeed2: number
   playerSpeed1: number
   playerSpeed2: number
-
+  openMenu: (top: string, left: string, player: number) => void
+  onChangeScore1: () => void
+  onChangeScore2: () => void
 }
 
 export const Canvas = (props: ICanvas) => {
-  const { openMenu, spellColor1, spellColor2, spellSpeed1, spellSpeed2, playerSpeed1, playerSpeed2, ...rest } = props
-
-  const [score1, setScore1] = useState(0)
-  const [score2, setScore2] = useState(0)
-  // const [playerMenu1, setPlayerMenu1] = useState<Record<string, string>>({top: '0', left: '0'})
-  // const [playerMenu2, setPlayerMenu2] = useState<Record<string, string>>({top: '0', left: '0'})
-
-
+  const { spellColor1, spellColor2, spellSpeed1, spellSpeed2, playerSpeed1, playerSpeed2, openMenu, onChangeScore1, onChangeScore2, ...rest } = props
 
   const player1 = useRef(createPlayer(100, 200, playerSpeed1, 'gold')).current
   const player2 = useRef(createPlayer(window.innerWidth - 100, 200, -playerSpeed2, 'blue')).current
@@ -84,11 +77,11 @@ export const Canvas = (props: ICanvas) => {
 
   const handleClick = (evt: React.MouseEvent) => {
     if (checkMouseClick(evt, player1)) {
-      const newMenuPosition = {top: `${evt.clientY}px`, left: `${evt.clientX * 1.3}px`}
+      const newMenuPosition = { top: `${evt.clientY}px`, left: `${evt.clientX * 1.3}px` }
       openMenu(newMenuPosition.top, newMenuPosition.left, 1)
     }
     if (checkMouseClick(evt, player2)) {
-      const newMenuPosition = {top: `${evt.clientY}px`, left: `${evt.clientX * .88}px`}
+      const newMenuPosition = { top: `${evt.clientY}px`, left: `${evt.clientX * .88}px` }
       openMenu(newMenuPosition.top, newMenuPosition.left, 2)
     }
   }
@@ -116,22 +109,17 @@ export const Canvas = (props: ICanvas) => {
 
     if (checkCollision(spell1, player2, 'blue')) {
       resetPositionSpell1()
-      setScore1((prevScore) => prevScore + 1)
+      onChangeScore1()
     }
     if (checkCollision(spell2, player1, 'gold')) {
       resetPositionSpell2()
-      setScore2((prevScore) => prevScore + 1)
+      onChangeScore2()
     }
   })
 
   return (
     <div>
       <canvas ref={canvasRef} {...rest} onMouseMove={handleMouseOver} onClick={handleClick} />
-      <div className={styles.scoresBlock}>
-
-        <h2>Player 1: {score1}</h2>
-        <h2>Player 2: {score2}</h2>
-      </div>
     </div>
   )
 }
