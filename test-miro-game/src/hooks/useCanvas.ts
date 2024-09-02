@@ -12,9 +12,10 @@ export const useCanvas = (
     let animationId: number;
     if (canvas) {
       const ratio = canvas.height / baseHeight;
-      canvas.width = window.innerWidth - 10 * ratio;
-      canvas.height = window.innerHeight - 200 * ratio;
+      canvas.width = window.innerWidth - (10 * ratio);
+      canvas.height = window.innerHeight - (200 * ratio);
       const context = canvas.getContext("2d");
+      console.log(window)
       if (context) {
         const render = () => {
           draw(context,ratio);
